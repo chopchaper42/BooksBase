@@ -1,0 +1,25 @@
+{
+  "name": "phpstormprojects/studentslist",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Anatoly",
+      "email": "email@example.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Models\\": "src/Models",
+      "Classes\\": "src/Classes",
+      "Src\\": "src/",
+      "Views\\": "src/Views",
+      "Controllers\\": "src/Controllers"
+    }
+  },
+  "require": {
+    "ext-pdo": "*",
+    "fzaninotto/faker": "^1.5"
+  }
+}

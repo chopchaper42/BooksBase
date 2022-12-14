@@ -1,0 +1,58 @@
+.button {
+    background-color: cornflowerblue;
+    color: white;
+}
+
+.button:hover {
+    /*background-color: #5a87d5;*/
+    background-color: #5793FA;
+}
+
+.link:hover {
+    background-color: #e7e7e7;
+    /*background-color: #D5C8DE;*/
+}
+
+.button p {
+    color: #f4f4f4;
+}
+
+body {
+    background-color: #f4f4f4;
+    /*background-color: #39E0E3;*/
+}
+
+input:focus {
+    outline: none;
+}
+
+.right-border, .left-border {
+    border-color: #ABABAB;
+}
+
+#book_cover {
+    border: 1px solid black;
+}
+
+table {
+    border-color: #111111;
+}
+
+tr:first-child {
+    background-color: cornflowerblue;
+    color: #f4f4f4;
+}
+
+tr:nth-child(even) {
+    background-color: #f0f0f0;
+}
+
+.book_title_link:hover {
+    /*color: #42a91d;*/
+    /*color: #8cf95e;*/
+    color: #909ff5;
+}
+
+.book_title_link {
+    text-decoration: none;
+}

@@ -1,0 +1,32 @@
+.container {
+    width: 300px;
+    border: 1px solid grey;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+form {
+    margin: 0;
+    font-size: 15px;
+    padding: 10px 15px;
+}
+
+#line {
+    width: 100%;
+}
+
+.input {
+    height: 1.5rem;
+    width: 90%;
+    font-size: 15px;
+    font-family: inherit;
+}
+
+.warning {
+    align-self: center;
+}
+
+label {
+    align-self: flex-start;
+    margin-left: 15px;
+}

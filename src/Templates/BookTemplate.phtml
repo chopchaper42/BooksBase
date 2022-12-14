@@ -1,0 +1,47 @@
+<?php
+    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+    header("Cache-Control: post-check=0, pre-check=0", false);
+    header("Pragma: no-cache");
+?>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <link rel="stylesheet" href="/Styles/commonStyles.css">
+    <link rel="stylesheet" href="/Styles/bookTemplate.css">
+    <link href="/Styles/light.css" rel="stylesheet" type="text/css" id="theme-link">
+    <title>Document</title>
+</head>
+<body>
+    <div id="page_container" class="flex-column page_container">
+        <div id="book-container" class="flex-column">
+            <?php if($error): ?>
+                <h1>Sorry! Something went wrong!</h1>
+            <?php else: ?>
+                <div class="flex-row justify-space-between" id="book-header">
+                    <div>
+                        <?php require_once "./Views/loadDownloadLink.php"; ?>
+                        <a href="#" class="link">Edit</a>
+                    </div>
+                </div>
+                <div class="flex-row" id="book-body">
+                    <div id="image_container">
+                        <?php require_once "./Views/loadBookCover.php"; ?>
+                    </div>
+                    <div id="info_container" class="flex-column">
+                        <h1><?php echo $data['title'] ?></h1>
+                        <h3>Author: <?php echo $data['author'] ?></h3>
+                        <h3>Year: <?php echo $data['year'] ?></h3>
+                        <h4>Language: <?php echo $data['language'] ?></h4>
+                        <p>Description: <?php echo $data['description'] ?></p>
+                        <p>Id: <?php echo $data['id'] ?></p>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <script src="/Scripts/loadTheme.js" type="module"></script>
+</body>
+</html>

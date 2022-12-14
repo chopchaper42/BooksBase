@@ -1,0 +1,51 @@
+html {
+    width: 100%;
+}
+
+body {
+    justify-content: center;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 5px;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    padding: 0;
+    margin: 5px;
+    display: block;
+}
+
+.page_container {
+    width: 70%;
+}
+
+.head {
+    justify-content: space-between;
+    align-items: end;
+}
+
+.search {
+    flex-direction: row;
+    margin: 20px 5px;
+    align-items: end;
+    height: fit-content;
+}
+
+.table_name {
+    height: fit-content;
+}
+
+.students_table {
+    width: 100%;
+}
+
+.left_head {
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+}

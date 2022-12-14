@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/Styles/sign.css" type="text/css">
+    <link rel="stylesheet" href="/Styles/dark.css" type="text/css" id="theme-link">
+    <link href="/Styles/commonStyles.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign In</title>
+</head>
+<body>
+    <article class="page_container justify-center flex-column">
+        <h2>Sign In</h2>
+        <div class="container">
+            <form id="sign_in_form" class="flex-column" action="/account" method="post">
+                <label for="username_input">Username:</label>
+                <input type="text" name="username" id="username_input" class="input" required>
+                <label for="password_input">Password:</label>
+                <input type="password" name="password" id="password_input" class="input" required>
+                <input type="submit" name="sign_in" class="button" id="sign_in_button" value="Sign In">
+                <hr id="line">
+                <p>Don't have an account yet?</p>
+                <a class="link" href="signup">Sign Up</a>
+            </form>
+        </div>
+        <p class="warning">Wrong username or password!</p>
+    </article>
+    <script src="/Scripts/loadTheme.js" type="module"></script>
+    <script src="/Scripts/SignFormCheck.js" type="module"></script>
+</body>
+</html>

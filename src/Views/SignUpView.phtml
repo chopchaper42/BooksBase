@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/Styles/sign.css" type="text/css">
+    <link href="/Styles/light.css" rel="stylesheet" type="text/css" id="theme-link">
+    <link href="/Styles/commonStyles.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up</title>
+</head>
+<body>
+    <article class="page_container justify-center flex-column">
+        <?php if($error): ?>
+            <h2>Something went wrong!</h2>
+        <?php endif; ?>
+        <h2>Sign Up</h2>
+        <div class="container">
+            <form id="sign_in_form" class="flex-column" action="/registration" method="post">
+                <label for="mail_input">Email:</label>
+                <input type="text" name="email" id="mail_input" class="input" required>
+                <label for="username_input">Username:</label>
+                <input type="text" name="username" id="username_input" class="input" required>
+                <label for="password_input">Password:</label>
+                <input type="password" name="password" id="password_input" class="input" required>
+                <label for="confirm_password_input">Confirm password:</label>
+                <input type="password" name="password" id="confirm_password_input" class="input" required>
+                <div class="flex-row" id="accept_to_mail_container">
+                    <label for="accept_to_mail">I allow to send me info mails:</label>
+                    <input type="checkbox" class="checkbox" id="accept_to_mail" name="send_mail">
+                </div>
+                <input type="submit" name="sign_in" class="button" value="Sign Up">
+                <input type="hidden" name="route" value="account">
+
+                <hr id="line">
+                <p>Have an account?</p>
+                <a href="signin" class="link">Sign In</a>
+            </form>
+        </div>
+    </article>
+    <script src="/Scripts/loadTheme.js" type="module"></script>
+    <script src="/Scripts/SignFormCheck.js" type="module"></script>
+</body>
+</html>

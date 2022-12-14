@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="/Styles/MainPageStyles.css" rel="stylesheet" type="text/css">
+    <link href="/Styles/light.css" rel="stylesheet" type="text/css" id="theme-link">
+    <link href="/Styles/commonStyles.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+<title>BooksBase</title>
+</head>
+<body>
+    <div class="page_container flex-column">
+        <nav class="header flex-row">
+            <div class="flex-row">
+                <label for="theme-change-button">Theme: </label>
+                <button class="button" id="theme-change-button" value="light">Light</button>
+            </div>
+            <a class="link no_right_margin" href="/random">Random Book</a>
+            <a href="signup" class="link no_right_margin">Sign Up</a>
+            <a href="signin" class="link">Sign In →</a>
+        </nav>
+        <article id="search_block_container">
+            <h1><span id="book-emoji">📚</span>BooksBase</h1>
+            <p id="search_bar_parg">Type in here title or author name:</p>
+            <form id="form" action="/search" method="GET">
+                <div class="flex-row">
+                    <input class="add_border" id="search_bar" name="value" value="<?php echo $_GET['value']; ?>" placeholder="Search..." type="text" required pattern="[a-zA-Z0-9а-яА-Я ]{3,}">
+                    <input class="add_border button" id="search_button" type="submit" value="Go">
+                </div>
+            </form>
+        </article>
+        <?php if ($error): ?>
+            <h4>Sorry! Something went wrong!</h4>
+        <?php else: ?>
+            <div class="flex-column hidden" id="search_results_container">
+                <table>
+                    <tr>
+                        <th>Cover</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Year</th>
+                    </tr>
+                    <?php foreach ($data as $row): ?>
+                        <?php $data = $row;?>
+                        <tr>
+                            <td><?php require "./Views/loadBookCover.php"; ?></td>
+                            <td><?php echo "<a class='book_title_link' href='/book?id={$data['id']}'>{$data['title']}</a>"; ?></td>
+                            <td><?php echo $data['author']; ?></td>
+                            <td><?php echo $data['year']; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        <?php endif; ?>
+    </div>
+    <script src="/Scripts/SearchBarInputControl.js" type="module"></script>
+    <script src="/Scripts/loadTheme.js" type="module"></script>
+    <script src="/Scripts/themeControl.js" type="module"></script>
+    <script src="/Scripts/SearchResultsViewControl.js"></script>
+</body>
+</html>
