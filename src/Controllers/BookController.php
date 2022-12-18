@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Models\BookService;
+use Models\PDOService;
 use PDOStatement;
 use Views\View;
 
@@ -17,13 +18,9 @@ class BookController implements Controller
         $this->view = new View();
     }
 
-    public function generateContent(int $id) {
-        $error = false;
-
+    public function generateContent($id) {
         $data = $this->model->getBookById($id);
-        $error = !$data;
-
-        $this->view->generateView(View::VIEWS['BOOK'], $data, $error);
+        $this->view->generateView(View::VIEWS['BOOK'], $data);
     }
 
 

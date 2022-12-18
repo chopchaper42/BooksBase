@@ -9,30 +9,22 @@ use PDOException;
 
 class PDOService /* Connects to the Database using PDO object. Creates PDO obj. using data from DBLogin class. */
 {
-    protected PDO $pdo;
-
-    /**
-     * @throws Exception
-     */
-    public function __construct()
+    public static function getPdo(): PDO
     {
-        $db_login = new DBLogin();
         try {
-            $this->connectToDB($db_login->attr, $db_login->user, $db_login->pass, $db_login->opts);
-            $this->pdo->query("USE library;");
+            $pdo = PDOService::createPDO();
+            $query = "USE library";
+            $pdo->query($query);
+            return $pdo;
         } catch (Exception $e) {
-            throw new Exception("Cannot connect to the database");
+            throw new PDOException($e->getMessage(), $e->getCode());
         }
     }
 
-    public function getPdo(): PDO
-    {
-        return $this->pdo;
-    }
-
-    private function connectToDB($attr, $user, $pass, $opts) {
+    private static function createPDO(): PDO {
+        $db_login = new DBLogin();
         try {
-            $this->pdo = new PDO($attr, $user, $pass, $opts);
+            return new PDO($db_login->attr, $db_login->user, $db_login->pass, $db_login->opts);
         } catch (PDOException $e) {
             throw new PDOException($e->getMessage(), $e->getCode());
         }

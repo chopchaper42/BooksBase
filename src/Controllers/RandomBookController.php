@@ -20,9 +20,8 @@ class RandomBookController implements Controller
     {
 
         $data = $this->model->getRandomBook();
-        $error = boolval($data);
 
-        $this->view->generateView(View::VIEWS['BOOK'], $data, $error);
+        $this->view->generateView(View::VIEWS['BOOK'], $data);
         header("Location: /book?id={$data['id']}", true, 301);
     }
 }

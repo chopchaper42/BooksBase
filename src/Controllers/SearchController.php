@@ -14,19 +14,12 @@ class SearchController implements Controller
     public function __construct()
     {
         $this->view = new View();
-        try {
-            $this->model = new BookService();
-        } catch (\Exception $e) {
-            $this->error = true;
-        }
+        $this->model = new BookService();
     }
 
     public function generateContent($search)
     {
-        if (!$this->error) {
-            $data = $this->model->searchBook($search);
-            $error = !$data;
-            $this->view->generateView(View::VIEWS['MAIN'], $data, $this->error);
-        }
+        $data = $this->model->searchBook($search);
+        $this->view->generateView(View::VIEWS['MAIN'], $data);
     }
 }

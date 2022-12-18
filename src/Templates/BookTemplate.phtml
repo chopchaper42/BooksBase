@@ -17,7 +17,7 @@
 <body>
     <div id="page_container" class="flex-column page_container">
         <div id="book-container" class="flex-column">
-            <?php if($error): ?>
+            <?php if(!$data): ?>
                 <h1>Sorry! Something went wrong!</h1>
             <?php else: ?>
                 <div class="flex-row justify-space-between" id="book-header">

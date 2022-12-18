@@ -15,7 +15,7 @@ class View
         'MAIN' => 'MainPageView.phtml'
     ];
 
-    public function generateView($template_view, $data, TypedException $error = null): void {
+    public function generateView($template_view, $data): void {
         require_once $template_view;
     }
 }

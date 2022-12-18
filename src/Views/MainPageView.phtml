@@ -30,7 +30,7 @@
                 </div>
             </form>
         </article>
-        <?php if ($error): ?>
+        <?php if (!$data): ?>
             <h4>Sorry! Something went wrong!</h4>
         <?php else: ?>
             <div class="flex-column hidden" id="search_results_container">
