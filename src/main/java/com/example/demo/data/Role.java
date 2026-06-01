@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+/* @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,4 +17,9 @@ public class Role {
     private int id;
     @Column(name = "role")
     private String role;
+} */
+
+public enum Role {
+    USER,
+    ADMIN
 }

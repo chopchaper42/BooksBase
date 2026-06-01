@@ -1,61 +1,60 @@
 package com.example.demo.data;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")
 public class User implements UserDetails {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Basic
-    @Column(name = "username")
     private String username;
-    @Basic
-    @Column(name = "password")
-    private String password;
-    @Basic
-    @Column(name = "email")
+    private String passwordHash;
     private String email;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-                joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-                inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
-    )
-    private List<Role> authorities;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    @OneToMany
-    @JoinTable(name = "user_book",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id")
+    @ManyToMany
+    @JoinTable(
+        name = "favorite_books",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "book_id")
     )
-    private List<Book> books;
+    private Set<Book> favoriteBooks;
 
-    public User(String username, String password, String email) {
+    public User(String username, String passwordHash, String email) {
         this.username = username;
-        this.password = password;
+        this.passwordHash = passwordHash;
         this.email = email;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> roles = new ArrayList<>();
-        authorities.forEach(auth -> roles.add(new SimpleGrantedAuthority(auth.getRole())));
+        roles.add(new SimpleGrantedAuthority(role.getRole()));
         return roles;
     }
 
@@ -84,10 +83,15 @@ public class User implements UserDetails {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                ", password='" + passwordHash + '\'' +
                 ", email='" + email + '\'' +
-                ", authorities=" + authorities +
-                ", books=" + books.size() +
+                ", role=" + role +
+                ", books=" + favoriteBooks.size() +
                 '}';
+    }
+
+    @Override
+    public String getPassword() {
+        return passwordHash;
     }
 }

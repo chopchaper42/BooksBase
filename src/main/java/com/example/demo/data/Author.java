@@ -1,12 +1,15 @@
 package com.example.demo.data;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.sql.Date;
 
 @Data
 @Entity
@@ -14,17 +17,15 @@ import java.sql.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class Author {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private int id;
-    @Column(name = "name")
-    private String name;
-    @Column(name = "lastname")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String firstName;
     private String lastName;
-    @Column(name = "birth")
-    private Date birthDate;
+    
+    private LocalDate birthDate;
 
     public String getFullName() {
-        return name + " " + lastName;
+        return firstName + " " + lastName;
     }
 }

@@ -1,9 +1,16 @@
 package com.example.demo.data;
 
-import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
@@ -11,26 +18,16 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PUBLIC, force = true)
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private long id;
-    @Column(name = "title")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
     private String title;
-    @Column(name = "description")
     private String description;
-    @Column(name = "publishing_year")
-    private String publishingYear;
-    @ManyToOne
-    @JoinColumn(name = "author")
+    private Integer publishingYear;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
     private Author author;
-
-    @JoinTable(
-            name = "book_review",
-            joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "review_id", referencedColumnName = "id")
-    )
-    @OneToMany
-    private List<Review> reviews;
 
     @Override
     public String toString() {
@@ -40,7 +37,6 @@ public class Book {
                 ", description='" + description + '\'' +
                 ", publishingYear='" + publishingYear + '\'' +
                 ", author=" + author.getFullName() +
-                ", reviews=" + reviews.size() +
                 '}';
     }
 }
