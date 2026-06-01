@@ -9,15 +9,11 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-dark" th:fragment="header">
         <div class="container-fluid justify-content-space-between">
-            <!--<a class="btn btn-primary mx-1">About</a>
-            <a class="btn btn-primary mx-1">Login</a>
-            <a class="btn btn-primary mx-1">Register</a>-->
             <a th:href="@{/}" class="text-decoration-none d-inline-block"><h1 class="mb-0 text-white">📖BooksBase</h1></a>
             <p sec:authorize="isAuthenticated()" sec:authentication="name" class="text text-white fw-bold m-0"></p>
             <div>
             <a th:href="@{/about}" class="btn btn-primary mx-1">About</a>
             <a th:href="@{/admin}" class="btn btn-danger mx-1" sec:authorize="hasRole('ADMIN')">Admin</a>
-            <a th:href="@{/admin}" class="btn btn-danger mx-1" sec:authorize="hasRole('MODERATOR')">Moderator</a>
             <a th:href="@{/login}" class="btn btn-primary mx-1" sec:authorize="!isAuthenticated()">Login</a>
             <a th:href="@{/registration}" class="btn btn-primary mx-1" sec:authorize="!isAuthenticated()">Register</a>
             <a th:href="@{/account}" class="btn btn-primary mx-1" sec:authorize="isAuthenticated()">Account</a>
@@ -45,7 +41,7 @@
 
         <div class="container-lg d-flex justify-content-around">
             <div th:each="book : ${books}" class="mx-3">
-                <div th:replace="~{book-templates :: book-card(|/addBook?bookId=${book.getId()}|, |/removeBook?bookId=${book.getId()}|)}"></div>
+                <div th:replace="~{book-templates :: book-card-home}"></div>
             </div>
         </div>
     </div>

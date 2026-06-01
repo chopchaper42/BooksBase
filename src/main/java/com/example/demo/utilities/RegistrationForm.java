@@ -1,6 +1,6 @@
 package com.example.demo.utilities;
 
-import com.example.demo.data.User;
+import com.example.demo.entities.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;

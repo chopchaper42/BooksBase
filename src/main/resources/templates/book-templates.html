@@ -6,7 +6,7 @@
                 <h4><a th:href="@{/book(id=${book.getId()})}" th:text="${book.getTitle()}" style="text-decoration: none; color: #212529"></a></h4>
             </div>
             <div class="card-body">
-                <p class="card-text">Author: <a th:href="@{/author(id=${book.getAuthor().getId()})}" th:text="${book.getAuthor().getFullName()}"></a></p>
+                <p class="card-text" th:text="'Author: ' + ${book.getAuthor().getFullName()}"></p>
                 <p class="card-text" th:text="'Published in: ' + ${book.getPublishingYear()}"></p>
                 <p class="card-text" th:text="'Description: ' + ${book.getDescription()}"></p>
                 <div sec:authorize="isAuthenticated()">
@@ -22,6 +22,20 @@
                         </form>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card my-3 book-card" style="/*max-width: 540px*/" th:fragment="book-card-home">
+    <div class="row g-0 m-0">
+        <div class="col-md">
+            <div class="card-header">
+                <h4><a th:href="@{/book(id=${book.getId()})}" th:text="${book.getTitle()}" style="text-decoration: none; color: #212529"></a></h4>
+            </div>
+            <div class="card-body">
+                <p class="card-text" th:text="'Author: ' + ${book.getAuthor().getFullName()}"></p>
+                <p class="card-text" th:text="'Published in: ' + ${book.getPublishingYear()}"></p>
+                <p class="card-text" th:text="'Description: ' + ${book.getDescription()}"></p>
             </div>
         </div>
     </div>

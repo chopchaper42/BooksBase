@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
-import com.example.demo.crud.UserRepository;
+import com.example.demo.repositories.UserRepository;
+import com.example.demo.services.UserService;
 import com.example.demo.utilities.RegistrationForm;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -13,13 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/registration")
 public class RegistrationController {
-
-    private UserRepository userRepository;
+    private final UserService userService;
     private PasswordEncoder passwordEncoder;
 
-    public RegistrationController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public RegistrationController(UserService userService, PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @ModelAttribute(name = "registrationForm")
@@ -36,7 +36,7 @@ public class RegistrationController {
     public String processRegistration(@Valid RegistrationForm regForm, Errors errors) {
         boolean error = false;
 
-        if (userRepository.findByUsername(regForm.getUsername()) != null) {
+        /*if (userRepository.findByUsername(regForm.getUsername()) != null) {
             error = true;
             errors.rejectValue("username", "1", "Username already exists.");
         }
@@ -54,9 +54,10 @@ public class RegistrationController {
         if (errors.hasErrors() || error) {
             log.info("errors detected.");
             return "registration";
-        }
+        }*/
 
-        userRepository.save(regForm.toUser(passwordEncoder));
+        //userService.saveRegistrationForm()
+        //userRepository.save(regForm.toUser(passwordEncoder));
         return "redirect:/login";
     }
 }

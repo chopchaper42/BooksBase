@@ -2,6 +2,8 @@ package com.example.demo.controllers;
 
 import java.util.List;
 
+import com.example.demo.entities.User;
+import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -11,51 +13,48 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.crud.BookRepository;
-import com.example.demo.crud.UserRepository;
-import com.example.demo.data.Book;
-import com.example.demo.utilities.UserBookService;
+import com.example.demo.entities.Book;
+import com.example.demo.services.BookService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/")
+@RequestMapping
 public class HomeController {
-
-    private final BookRepository bookRepository;
-    private final UserRepository userRepository;
-    private final UserBookService userBookService;
+    private final BookService bookService;
+    private final UserService userService;
 
     @Autowired
-    public HomeController(BookRepository bookRepository, UserRepository userRepository, UserBookService userBookService) {
-        this.bookRepository = bookRepository;
-        this.userRepository = userRepository;
-        this.userBookService = userBookService;
+    public HomeController(BookService bookService, UserService userService) {
+        this.bookService = bookService;
+        this.userService = userService;
     }
 
-    @GetMapping
-    public String home(Model model, Authentication authentication) {
-        if (authentication != null && authentication.isAuthenticated())
-            userBookService.initModelWithUserBooks(model, authentication);
+    @GetMapping("/")
+    public String home(Model model) {
+        List<Book> popularBooks = bookService.getPopularBooks();
 
-        addTrendingBooksToModel(model);
+        model.addAttribute("books", popularBooks);
+
         return "home";
     }
 
-    @PostMapping("/addBook")
-    public String processBookAdd(@RequestParam long bookId, Authentication authentication) {
-        userBookService.addBookToUserBooks(bookId, authentication);
-        return "redirect:/";
-    }
-    @PostMapping("/removeBook")
-    public String processBookRemoval(@RequestParam long bookId, Authentication authentication) {
-        userBookService.removeBookFromUserBooks(bookId, authentication);
-        return "redirect:/";
+    @GetMapping("/search")
+    public String processSearch(@RequestParam String value, Model model) {
+        List<Book> booksByTitle = bookService.searchBooks(value);
+
+        model.addAttribute("books", booksByTitle);
+
+        return "search";
     }
 
-    private void addTrendingBooksToModel(Model model) {
-        List<Book> books = bookRepository.getTrendingBooks();
-        model.addAttribute("books", books);
+    @GetMapping("/account")
+    public String get(Model model, Authentication authentication) {
+        User user = userService.getUser(authentication.getName());
+
+        model.addAttribute("books", user.getBooks());
+
+        return "account";
     }
 }
