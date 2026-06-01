@@ -1,7 +1,7 @@
 package com.example.demo.configuration;
 
-import com.example.demo.crud.UserRepository;
 import com.example.demo.data.User;
+import com.example.demo.repositories.UserRepository;
 import com.example.demo.security.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

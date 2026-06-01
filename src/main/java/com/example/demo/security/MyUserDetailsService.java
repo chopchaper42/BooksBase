@@ -1,7 +1,8 @@
 package com.example.demo.security;
 
-import com.example.demo.crud.UserRepository;
 import com.example.demo.data.User;
+import com.example.demo.repositories.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
