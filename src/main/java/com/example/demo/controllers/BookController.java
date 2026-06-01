@@ -1,11 +1,12 @@
 package com.example.demo.controllers;
 
-import com.example.demo.crud.BookRepository;
-import com.example.demo.crud.ReviewRepository;
-import com.example.demo.crud.UserRepository;
 import com.example.demo.data.Book;
-import com.example.demo.data.Review;
-import com.example.demo.utilities.UserBookService;
+import com.example.demo.data.Comment;
+import com.example.demo.repositories.BookRepository;
+import com.example.demo.repositories.CommentRepository;
+import com.example.demo.repositories.UserRepository;
+import com.example.demo.services.BookService;
+
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,29 +32,29 @@ public class BookController {
 
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
-    private final ReviewRepository reviewRepository;
-    private final UserBookService userBookService;
+    private final CommentRepository commentRepository;
+    private final BookService bookService;
 
     @ModelAttribute(name = "book")
     public Book book() {
         return new Book();
     }
 
-    public BookController(BookRepository bookRepository, UserRepository userRepository, ReviewRepository reviewRepository, UserBookService userBookService) {
+    public BookController(BookRepository bookRepository, UserRepository userRepository, CommentRepository commentRepository, BookService bookService) {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
-        this.reviewRepository = reviewRepository;
-        this.userBookService = userBookService;
+        this.commentRepository = commentRepository;
+        this.bookService = bookService;
     }
 
-    @GetMapping
+    @GetMapping("/book")
     public String book(@RequestParam int id, Model model, Authentication authentication) {
-        Book book = bookRepository.findBookById(id);
+        Book book = bookRepository.findBookById(id);        // TODO: Remove repository access from controller (!!!)
         model.addAttribute("book", book);
 
-        if (authentication != null && authentication.isAuthenticated()) {
-            userBookService.initModelWithUserBooks(model, authentication);
-            model.addAttribute("blank_review", new Review()); // fix: add even if unauthenticated
+        if (authentication != null && authentication.isAuthenticated()) {       // TODO: Spring Security gives better tools! Remove!!!
+            bookService.initModelWithUserBooks(model, authentication);          // TODO: servieces should not manipulate Model or any other MVC objects (!!!)
+            model.addAttribute("blank_review", new Comment()); // fix: add even if unauthenticated
         }
 
         //load author's books
@@ -63,30 +66,30 @@ public class BookController {
 
     @PostMapping("/addBook")
     public String addBookToFavorite(@RequestParam int bookId, Authentication authentication) {
-        userBookService.addBookToUserBooks(bookId, authentication);
+        bookService.addBookToUserBooks(bookId, authentication);
 
         return "redirect:/book?id=" + bookId;
     }
     @PostMapping("/removeBook")
     public String removeBookFromFavorite(@RequestParam int bookId, Authentication authentication) {
-        userBookService.removeBookFromUserBooks(bookId, authentication);
+        bookService.removeBookFromUserBooks(bookId, authentication);
 
         return "redirect:/book?id=" + bookId;
     }
 
     @PostMapping("/postReview")
-    public String postReview(@ModelAttribute("blank_review") Review review, @RequestParam int bookId, Authentication authentication) {
-        review.setUser(userRepository.findByUsername(authentication.getName()));
-        review.setPostDate(Date.valueOf(LocalDate.now()));
+    public String postReview(@ModelAttribute("blank_review") Comment comment, @RequestParam int bookId, Authentication authentication) {
+        comment.setUser(userRepository.findByUsername(authentication.getName()));
+        comment.setPostDate(LocalDateTime.of(LocalDate.now(), LocalTime.now()));
 
         Book book = bookRepository.findBookById(bookId);
-        book.getReviews().add(review);
+        book.getComments().add(comment);
 
-        log.info("User: " + review.getUser().getUsername());
-        log.info("Text: " + review.getText());
-        log.info("Date: " + review.getPostDate().toString());
+        log.info("User: " + comment.getUser().getUsername());
+        log.info("Text: " + comment.getText());
+        log.info("Date: " + comment.getPostDate().toString());
 
-        reviewRepository.save(review);
+        commentRepository.save(comment);
         bookRepository.save(book);
 
         return "redirect:/book?id=" + bookId;
@@ -95,9 +98,9 @@ public class BookController {
     @Secured({ "ROLE_ADMIN", "ROLE_MODERATOR" })
     @GetMapping("/deleteReview")
     public String deleteReview(@RequestParam int bookId, @RequestParam long reviewId) {
-        Review review = reviewRepository.findById(reviewId).orElse(null);
+        Review review = commentRepository.findById(reviewId).orElse(null);
         if (review != null)
-            reviewRepository.delete(review);
+            commentRepository.delete(review);
 
         return "redirect:/book?id=" + bookId;
     }

@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.crud.BookRepository;
-import com.example.demo.crud.UserRepository;
 import com.example.demo.data.Book;
-import com.example.demo.utilities.UserBookService;
+import com.example.demo.repositories.BookRepository;
+import com.example.demo.repositories.UserRepository;
+import com.example.demo.services.BookService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,10 +25,10 @@ public class HomeController {
 
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
-    private final UserBookService userBookService;
+    private final BookService userBookService;
 
     @Autowired
-    public HomeController(BookRepository bookRepository, UserRepository userRepository, UserBookService userBookService) {
+    public HomeController(BookRepository bookRepository, UserRepository userRepository, BookService userBookService) {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
         this.userBookService = userBookService;

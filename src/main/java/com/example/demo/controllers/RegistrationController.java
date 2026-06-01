@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.crud.UserRepository;
+import com.example.demo.repositories.UserRepository;
 import com.example.demo.utilities.RegistrationForm;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

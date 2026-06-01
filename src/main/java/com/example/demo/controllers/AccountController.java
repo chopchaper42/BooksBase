@@ -1,9 +1,10 @@
 package com.example.demo.controllers;
 
-import com.example.demo.crud.BookRepository;
-import com.example.demo.crud.UserRepository;
 import com.example.demo.data.Book;
 import com.example.demo.data.User;
+import com.example.demo.repositories.BookRepository;
+import com.example.demo.repositories.UserRepository;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

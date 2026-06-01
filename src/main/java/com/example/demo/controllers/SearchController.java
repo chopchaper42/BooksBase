@@ -1,7 +1,8 @@
 package com.example.demo.controllers;
 
-import com.example.demo.crud.BookRepository;
 import com.example.demo.data.Book;
+import com.example.demo.repositories.BookRepository;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,11 +24,6 @@ public class SearchController {
     public SearchController(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
-
-    /*@GetMapping
-    public String search(Model model) {
-        return "search";
-    }*/
 
     @GetMapping
     public String processSearch(@RequestParam String value, Model model) {

@@ -1,7 +1,8 @@
 package com.example.demo.controllers;
 
-import com.example.demo.crud.AuthorRepository;
 import com.example.demo.data.Author;
+import com.example.demo.repositories.AuthorRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
