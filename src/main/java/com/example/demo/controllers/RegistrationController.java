@@ -34,30 +34,15 @@ public class RegistrationController {
 
     @PostMapping
     public String processRegistration(@Valid RegistrationForm regForm, Errors errors) {
-        boolean error = false;
 
-        /*if (userRepository.findByUsername(regForm.getUsername()) != null) {
-            error = true;
-            errors.rejectValue("username", "1", "Username already exists.");
-        }
-        if (userRepository.findByEmail(regForm.getEmail()) != null) {
-            error = true;
-            errors.rejectValue("email", "1", "Email already in use.");
-        }
-        if (!regForm.getPassword().equals(regForm.getPasswordConfirmation())) {
-            log.warn("Passwords don't match!");
-            log.warn("Password 1: " + regForm.getPassword());
-            log.warn("Password 2: " + regForm.getPasswordConfirmation());
-            error = true;
-            errors.rejectValue("passwordConfirmation", "1", "Passwords should match.");
-        }
-        if (errors.hasErrors() || error) {
-            log.info("errors detected.");
+        userService.validateRegistration(regForm, errors);
+
+        if (errors.hasErrors()) {
             return "registration";
-        }*/
+        }
 
-        //userService.saveRegistrationForm()
-        //userRepository.save(regForm.toUser(passwordEncoder));
+        userService.registerUser(regForm);
+
         return "redirect:/login";
     }
 }

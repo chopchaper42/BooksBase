@@ -37,17 +37,7 @@ public class BookController {
 
     @GetMapping
     public String book(@RequestParam Long id, Model model, Authentication authentication) {
-        Book book = bookService.getBook(id);
-
-        model.addAttribute("book", book);
-
-       /* if (authentication != null && authentication.isAuthenticated()) {
-            bookService.initModelWithUserBooks(model, authentication);
-            model.addAttribute("blank_review", new Review()); // fix: add even if unauthenticated
-        }*/
-
-        List<Book> authorBooks = bookService.getBooksByAuthor(book.getAuthor());
-        model.addAttribute("authorBooks", authorBooks);
+        bookService.createBookPage(id, model, authentication);
 
         return "book";
     }
@@ -65,31 +55,19 @@ public class BookController {
         return "redirect:/book?id=" + bookId;
     }
 
-    /*@PostMapping("/postReview")
+    @PostMapping("/postReview")
     public String postReview(@ModelAttribute("blank_review") Review review, @RequestParam Long bookId, Authentication authentication) {
-        review.setUser(userService.findByUsername(authentication.getName()));
-        review.setPostDate(Date.valueOf(LocalDate.now()));
-
-        Book book = bookService.getBook(bookId);
-        book.getReviews().add(review);
-
-        log.info("User: " + review.getUser().getUsername());
-        log.info("Text: " + review.getText());
-        log.info("Date: " + review.getPostDate().toString());
-
-        reviewRepository.save(review);
-        bookRepository.save(book);
+        bookService.addUsernameAndDateToReview(review, authentication);
+        bookService.addReview(bookId, review);
 
         return "redirect:/book?id=" + bookId;
-    }*/
+    }
 
-    /*@Secured({ "ROLE_ADMIN", "ROLE_MODERATOR" })
+    @Secured({ "ROLE_ADMIN", "ROLE_MODERATOR" })
     @GetMapping("/deleteReview")
     public String deleteReview(@RequestParam int bookId, @RequestParam long reviewId) {
-        Review review = reviewRepository.findById(reviewId).orElse(null);
-        if (review != null)
-            reviewRepository.delete(review);
+        bookService.deleteReview(reviewId);
 
         return "redirect:/book?id=" + bookId;
-    }*/
+    }
 }

@@ -22,10 +22,10 @@ public class AccountController {
         this.userService = userService;
     }
 
-    /*@GetMapping("/account")
+    @GetMapping("/account")
     public String get(Model model, Authentication authentication) {
         User user = userService.getUser(authentication.getName());
         model.addAttribute("books", user.getBooks());
         return "account";
-    }*/
+    }
 }

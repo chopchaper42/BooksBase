@@ -1,7 +1,10 @@
 package com.example.demo.services;
 
 import com.example.demo.entities.Author;
+import com.example.demo.entities.Review;
+import com.example.demo.repositories.AuthorRepository;
 import com.example.demo.repositories.BookRepository;
+import com.example.demo.repositories.ReviewRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.entities.Book;
 import com.example.demo.entities.User;
@@ -10,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,20 +23,35 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
+    private final ReviewRepository reviewRepository;
+    private final AuthorRepository authorRepository;
 
-    public BookService(BookRepository bookRepository, UserRepository userRepository) {
+    public BookService(BookRepository bookRepository, UserRepository userRepository, ReviewRepository reviewRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
+        this.reviewRepository = reviewRepository;
+        this.authorRepository = authorRepository;
     }
 
     public void initModelWithUserBooks(Model model, Authentication authentication) {
-        User user = userRepository.findByUsername(authentication.getName());
-        model.addAttribute("userBooks", user.getBooks());
-        log.info("User books: " + user.getBooks());
+
     }
 
-    public void addReview(int bookId, Authentication authentication) {
+    public void addReview(Long bookId, Review review) {
+        Book book = bookRepository.findBookById(bookId);
+        book.getReviews().add(review);
 
+        reviewRepository.save(review);
+        bookRepository.save(book);
+    }
+
+    public void deleteReview(Long reviewId) {
+        reviewRepository.findById(reviewId).ifPresent(reviewRepository::delete);
+    }
+
+    public void addUsernameAndDateToReview(Review review, Authentication authentication) {
+        review.setUser(userRepository.findByUsername(authentication.getName()));
+        review.setPostDate(Date.valueOf(LocalDate.now()));
     }
 
     public List<Book> searchBooks(String searchValue) {
@@ -39,12 +59,20 @@ public class BookService {
         return books;
     }
 
-    public Book getBook(Long bookId) {
-        return bookRepository.findBookById(bookId);
-    }
+    public void createBookPage(Long bookId, Model model, Authentication authentication) {
+        Book book = bookRepository.findBookById(bookId);
 
-    public List<Book> getBooksByAuthor(Author author) {
-        return bookRepository.getBooksByAuthor(author);
+        model.addAttribute("book", book);
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            User user = userRepository.findByUsername(authentication.getName());
+
+            model.addAttribute("userBooks", user.getBooks());
+            model.addAttribute("blank_review", new Review());
+        }
+
+        List<Book> authorBooks = bookService.getBooksByAuthor(book.getAuthor());
+        model.addAttribute("authorBooks", authorBooks);
     }
 
     public void addBookToUserBooks(long bookId, Authentication authentication) {

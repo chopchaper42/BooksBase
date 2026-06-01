@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
 
-@EnableMethodSecurity // enables you to restrict method use. I only wonder if it works just in this class or globally.
+@EnableMethodSecurity // enables you to restrict method use
 @Configuration
 public class SecurityConfig {
 
